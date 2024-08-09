@@ -3,12 +3,12 @@ import pymunk.pygame_util
 
 pygame.init()
 
-width,height=700,700
+width,height=900,700
 screen=pygame.display.set_mode((width,height))
 clock=pygame.time.Clock()
 
 def calc_distance(p1,p2):
-     return math.sqrt((p2[1]-p1[1])**2 + (p2[0]-p2[0])**2)
+     return math.sqrt((p2[1]-p1[1])**2 + (p2[0]-p1[0])**2)
      
 def calc_angle(p1,p2):
      return math.atan2(p2[1]-p1[1],p2[0]-p1[0])   #angle in radins
@@ -21,6 +21,26 @@ def draw(space,screen,draw_options,line):  #help in drawing on the screen stuff 
 
      space.debug_draw(draw_options)
 
+
+def obstacles(shape,width,height):
+    RED=(225,0,0,100)
+    rects=[
+        [(220,height-150),(40,200),RED,100],   #left
+        [(400,height-150),(40,200),RED,100],  #right
+        [(300,height-240),(250,40),RED,100],   #top
+        
+    ]
+    for pos,size,color,mass in rects :
+        body=pymunk.Body()
+        body.position=pos
+        shape=pymunk.Poly.create_box(body,size)
+        shape.color=color
+        shape.mass=mass
+        shape.elasticity=0.4
+        shape.friction=0.4
+        space.add(body,shape)
+    
+
 def create_boundaries(space,width,height):   #making sqaure boundaries
      rects=[                     #rects=((position),(size))
           [(width/2,height-10),(width,20)],
@@ -32,8 +52,8 @@ def create_boundaries(space,width,height):   #making sqaure boundaries
           body=pymunk.Body(body_type=pymunk.Body.STATIC)  #static doent need body mass
           body.position=pos
           shape=pymunk.Poly.create_box(body,size)
-          shape.elasticity=0.6
-          shape.friction=0
+          shape.elasticity=0.9
+          shape.friction=0.3
           space.add(body,shape)
 
 
@@ -41,8 +61,8 @@ def create_ball(sapce,radius,mass,pos):
      body=pymunk.Body(body_type=pymunk.Body.STATIC)
      body.position=pos
      shape=pymunk.Circle(body,radius)
-     shape.elasticity=0.5
-     shape.friction=0
+     shape.elasticity=0.9
+     shape.friction=0.4
      shape.mass=mass
      shape.color=(255,255,255,255)
      space.add(body,shape)   #here the shapeis attach to body and will act acc to body
@@ -55,6 +75,7 @@ draw_options=pymunk.pygame_util.DrawOptions(screen)  #pymunk calculate and drw s
 pressed_pos=None
 ball=None
 create_boundaries(space,width,height)
+obstacles(space,width,height)
 
 while True:
     
@@ -88,6 +109,6 @@ while True:
 
 
     draw(space,screen,draw_options,line)   #just this draws all the shape and body
-    space.step(1/60) #says about how fast the simulation will run in 1 sec
+    space.step(1/60) # how fast the simulation will run in 1 sec
     pygame.display.update()
     clock.tick(60) 
