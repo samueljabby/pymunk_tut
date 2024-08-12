@@ -25,18 +25,17 @@ def draw(space,screen,draw_options,line):  #help in drawing on the screen stuff 
 def obstacles(shape,width,height):
     RED=(225,0,0,100)
     rects=[
-        [(220,height-150),(40,200),RED,100],   #left
-        [(400,height-150),(40,200),RED,100],  #right
-        [(300,height-240),(250,40),RED,100],   #top
-        
-    ]
+        [(220,height-150),(40,200),RED,10],   #left
+        [(400,height-150),(40,200),RED,10],  #right
+        [(300,height-240),(250,40),RED,10],   #top
+        ]
     for pos,size,color,mass in rects :
         body=pymunk.Body()
         body.position=pos
         shape=pymunk.Poly.create_box(body,size)
         shape.color=color
         shape.mass=mass
-        shape.elasticity=0.4
+        shape.elasticity=0.8
         shape.friction=0.4
         space.add(body,shape)
     
@@ -57,11 +56,12 @@ def create_boundaries(space,width,height):   #making sqaure boundaries
           space.add(body,shape)
 
 
+print("heloo")
 def create_ball(sapce,radius,mass,pos):
      body=pymunk.Body(body_type=pymunk.Body.STATIC)
      body.position=pos
      shape=pymunk.Circle(body,radius)
-     shape.elasticity=0.9
+     shape.elasticity=1.2
      shape.friction=0.4
      shape.mass=mass
      shape.color=(255,255,255,255)
@@ -90,11 +90,11 @@ while True:
             if event.type==pygame.MOUSEBUTTONDOWN:
                if not ball:
                 pressed_pos=pygame.mouse.get_pos()
-                ball=create_ball(space,30,10,pressed_pos)
+                ball=create_ball(space,5,10 ,pressed_pos)
                elif pressed_pos:
                 ball.body.body_type=pymunk.Body.DYNAMIC
                 angle=calc_angle(*line)
-                force=calc_distance(*line) *70
+                force=calc_distance(*line) *700
                 fx=math.cos(angle)*force      #watch tech with tim pymunk tutorial (46:00)
                 fy=math.sin(angle)*force
                 ball.body.apply_impulse_at_local_point((-fx,-fy),(0,0))  #apllyin force of 10000 in x direction  at center of the ball
@@ -103,10 +103,6 @@ while True:
                    space.remove(ball,ball.body)
                    ball=None
                    pressed_pos=None
-
-                      
-
-
 
     draw(space,screen,draw_options,line)   #just this draws all the shape and body
     space.step(1/60) # how fast the simulation will run in 1 sec
