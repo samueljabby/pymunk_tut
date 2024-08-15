@@ -56,8 +56,7 @@ def create_boundaries(space,width,height):   #making sqaure boundaries
           space.add(body,shape)
 
 
-print("heloo")
-def create_ball(sapce,radius,mass,pos):
+def create_ball(space,radius,mass,pos):
      body=pymunk.Body(body_type=pymunk.Body.STATIC)
      body.position=pos
      shape=pymunk.Circle(body,radius)
