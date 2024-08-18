@@ -1,9 +1,9 @@
-
-        #     if event.key == pygame.K_LEFT:
-        #         move_left = False
-        #     elif event.key == pygame.K_RIGHT:
-        #         move_right = False
-        #     elif event.key == pygame.K_UP:
-        #         move_up = False
-        #     elif event.key == pygame.K_DOWN:
-        #         move_down = False
+#if event.type==pygame.KEYUP:
+        #     if event.key==pygame.K_z:
+        #         left_move_up=False
+        #     if event.key==pygame.K_x:
+        #         left_move_down=False
+        #     if event.key==pygame.K_n:
+        #         right_move_up=False
+        #     if event.key==pygame.K_m:
+        #         right_move_down=False
