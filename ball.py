@@ -107,3 +107,4 @@ while True:
     space.step(1/60) # how fast the simulation will run in 1 sec
     pygame.display.update()
     clock.tick(60) 
+    
