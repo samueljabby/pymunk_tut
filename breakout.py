@@ -1,16 +1,16 @@
-import pygame,pymunk,pymunk.pygame_util,sys
+import pygame,pymunk,pymunk.pygame_util,sys,random
 pygame.init()
 
-WIDTH,HEIGHT=1000,600
+WIDTH,HEIGHT=1095,600
 screen=pygame.display.set_mode((WIDTH,HEIGHT))
 clock=pygame.time.Clock()
 FPS=80
 space=pymunk.Space()
 draw_options=pymunk.pygame_util.DrawOptions(screen)
-bricks_list=[]
+# bricks_list=[]
 
 left=-2
-right=1000
+right=1095
 top=-2
 bottom=600
 middlex=500
@@ -19,9 +19,9 @@ middley=300
 class Ball():
     def __init__(self):
         self.body=pymunk.Body()
-        self.body.position=(500,500)
+        self.body.position=(500,400)
         self.shape=pymunk.Circle(self.body,8)
-        self.body.velocity=(300,-300)
+        self.body.velocity=(300*random.choice([-1,1]),-300)
         self.shape.density=1
         self.shape.elasticity=1
         self.shape.collision_type=1
@@ -35,7 +35,7 @@ class Wall():
         self.shape.elasticity=1
 
 class Bricks():
-    def __init__(self,x,y,size=(60,35)):
+    def __init__(self,x,y,size=(70,45)):
         self.body=pymunk.Body(body_type=pymunk.Body.STATIC)
         self.body.position=x,y
         self.shape=pymunk.Poly.create_box(self.body,size)
@@ -44,7 +44,7 @@ class Bricks():
         space.add(self.body,self.shape)
         self.shape.collision_type=2
 
-    def brick_setup(self,rows=10,cols=16,x_distance=63,y_distance=37,x_offset=28,y_offset=18):
+    def brick_setup(self,rows=6,cols=15,x_distance=73,y_distance=47,x_offset=36,y_offset=18):
         for index_row,row in enumerate(range(rows)):
             for index_col,col in enumerate(range(cols)):
                 x=index_col*x_distance+x_offset
@@ -56,7 +56,6 @@ class Bricks():
         brick_shape=arbiter.shapes[1]
         space.remove(brick_shape,brick_shape.body)
         return True
-
 
 
 class Player():
@@ -75,11 +74,9 @@ class Player():
     def stop(self):
         self.body.velocity=0,0
 
-
 def draw(space,screen,draw_options):
     screen.fill("white")
     space.debug_draw(draw_options)
-
 
 #ball
 ball=Ball()
@@ -111,7 +108,6 @@ while True:
         player.move(False)
     else:
         player.stop()
-
 
     draw(space,screen,draw_options)
     space.step(1/FPS)
